@@ -69,7 +69,6 @@ import it.fast4x.rimusic.service.MyDownloadService
 import it.fast4x.rimusic.utils.AppLifecycleTracker
 import it.fast4x.rimusic.utils.CoilBitmapLoader
 import it.fast4x.rimusic.utils.collect
-import it.fast4x.rimusic.utils.getDeviceInfo
 import it.fast4x.rimusic.utils.getEnum
 import it.fast4x.rimusic.utils.intent
 import it.fast4x.rimusic.utils.isAtLeastAndroid6

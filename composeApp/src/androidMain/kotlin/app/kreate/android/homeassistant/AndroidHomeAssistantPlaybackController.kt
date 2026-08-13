@@ -235,13 +235,7 @@ class AndroidHomeAssistantPlaybackController(
         mediaItem: MediaItem?,
         metadata: MediaMetadata,
     ): String? {
-        /*
-         * Media3 does not define a standard album ID field.
-         * Kreate may store it in MediaItem.localConfiguration.tag,
-         * requestMetadata.extras, or another project-specific object.
-         *
-         * For now, do not guess or use albumTitle as an ID.
-         */
+        // not supported, for future use
         return null
     }
 
