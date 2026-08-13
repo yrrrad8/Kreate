@@ -916,4 +916,16 @@
     <string name="word_pin">Pin</string>
     <string name="word_unpin">Unpin\n</string>
     <string name="success_playlist_deleted">Deleted %s</string>
+    <string name="home_assistant">Home Assistant</string>
+    <string name="home_assistant_enabled">Home Assistant enabled</string>
+    <string name="host">Host</string>
+    <string name="port">Port</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
+    <string name="device_id">Device ID</string>
+    <string name="allow_play_pause">Allow play/pause</string>
+    <string name="allow_next">Allow next</string>
+    <string name="allow_previous">Allow previous</string>
+    <string name="allow_seek">Allow seek</string>
+    <string name="allow_stop">Allow stop</string>
 </resources>

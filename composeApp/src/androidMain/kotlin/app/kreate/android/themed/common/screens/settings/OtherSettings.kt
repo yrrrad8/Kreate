@@ -57,15 +57,16 @@ fun OtherSettings( paddingValues: PaddingValues ) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.background( colorPalette().background0 )
-                           .padding( paddingValues )
-                           .fillMaxHeight()
-                           .fillMaxWidth(
-                               if ( NavigationBarPosition.Right.isCurrent() )
-                                   Dimensions.contentWidthRightBar
-                               else
-                                   1f
-                           )
+        modifier = Modifier
+            .background(colorPalette().background0)
+            .padding(paddingValues)
+            .fillMaxHeight()
+            .fillMaxWidth(
+                if (NavigationBarPosition.Right.isCurrent())
+                    Dimensions.contentWidthRightBar
+                else
+                    1f
+            )
     ) {
         search.ToolBarButton()
 
@@ -164,6 +165,7 @@ fun OtherSettings( paddingValues: PaddingValues ) {
                     }
                 val subtitle by remember { derivedStateOf {
                     if (isIgnoringBatteryOptimizations)
+
                         context.getString( R.string.already_unrestricted )
                     else
                         context.getString( R.string.disable_background_restrictions )
@@ -204,11 +206,11 @@ fun OtherSettings( paddingValues: PaddingValues ) {
                 )
             }
 
-            header( {"HA"} )
-            entry( search, "HA enabled") {
+            header(R.string.home_assistant)
+            entry( search, R.string.home_assistant_enabled) {
                 SettingComponents.BooleanEntry(
                     Preferences.HOME_ASSISTANT_ENABLED,
-                    "Enable HA",
+                    R.string.home_assistant_enabled,
                     action = SettingComponents.Action.RESTART_PLAYER_SERVICE
                 )
             }
@@ -219,53 +221,53 @@ fun OtherSettings( paddingValues: PaddingValues ) {
                 Column {
                     SettingComponents.InputDialogEntry(
                         preference = Preferences.HOME_ASSISTANT_MQTT_HOST,
-                        title = "Host",
+                        titleId = R.string.host,
                         constraint = InputDialogConstraints.ALL,
                         keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Uri)
                     )
                     SettingComponents.InputDialogEntry(
                         preference = Preferences.HOME_ASSISTANT_MQTT_PORT,
-                        title = "Port",
+                        titleId = R.string.port,
                         constraint = InputDialogConstraints.POSITIVE_INTEGER,
                         keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                     SettingComponents.InputDialogEntry(
                         preference = Preferences.HOME_ASSISTANT_MQTT_USERNAME,
-                        title = "User",
+                        titleId = R.string.user,
                         constraint = InputDialogConstraints.ALL,
                     )
                     SettingComponents.InputDialogEntry(
                         preference = Preferences.HOME_ASSISTANT_MQTT_PASSWORD,
-                        title = "Password",
+                        titleId = R.string.password,
                         constraint = InputDialogConstraints.ALL,
                         subtitle = "●".repeat(Preferences.HOME_ASSISTANT_MQTT_PASSWORD.value.length),
                         keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
                     SettingComponents.InputDialogEntry(
                         preference = Preferences.HOME_ASSISTANT_DEVICE_ID,
-                        title = "Device ID",
+                        titleId = R.string.device_id,
                         constraint = InputDialogConstraints.ALL
                     )
 
                     SettingComponents.BooleanEntry(
                         Preferences.HOME_ASSISTANT_ALLOW_PLAY_PAUSE,
-                        "Allow play/pause"
+                        R.string.allow_play_pause
                     )
                     SettingComponents.BooleanEntry(
                         Preferences.HOME_ASSISTANT_ALLOW_NEXT,
-                        "Allow next"
+                        R.string.allow_next
                     )
                     SettingComponents.BooleanEntry(
                         Preferences.HOME_ASSISTANT_ALLOW_PREVIOUS,
-                        "Allow previous"
+                        R.string.allow_previous
                     )
                     SettingComponents.BooleanEntry(
                         Preferences.HOME_ASSISTANT_ALLOW_SEEK,
-                        "Allow seek"
+                        R.string.allow_seek
                     )
                     SettingComponents.BooleanEntry(
                         Preferences.HOME_ASSISTANT_ALLOW_STOP,
-                        "Allow stop"
+                        R.string.allow_stop
                     )
                 }
             }

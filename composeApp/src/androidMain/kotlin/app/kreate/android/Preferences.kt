@@ -530,7 +530,7 @@ sealed class Preferences<T>(
         }
 
         val HOME_ASSISTANT_ALLOW_SEEK by lazy {
-            Boolean(preferences, Key.HOME_ASSISTANT_ALLOW_SEEK, "", false)
+            Boolean(preferences, Key.HOME_ASSISTANT_ALLOW_SEEK, "", true)
         }
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Notification">
