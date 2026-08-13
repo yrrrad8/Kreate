@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import app.kreate.android.Preferences
@@ -200,6 +202,72 @@ fun OtherSettings( paddingValues: PaddingValues ) {
                     R.string.parental_control,
                     R.string.info_prevent_play_songs_with_age_limitation
                 )
+            }
+
+            header( {"HA"} )
+            entry( search, "HA enabled") {
+                SettingComponents.BooleanEntry(
+                    Preferences.HOME_ASSISTANT_ENABLED,
+                    "Enable HA",
+                    action = SettingComponents.Action.RESTART_PLAYER_SERVICE
+                )
+            }
+            animatedEntry(
+                key = "homeAssistantSettings",
+                visible = Preferences.HOME_ASSISTANT_ENABLED.value
+            ) {
+                Column {
+                    SettingComponents.InputDialogEntry(
+                        preference = Preferences.HOME_ASSISTANT_MQTT_HOST,
+                        title = "Host",
+                        constraint = InputDialogConstraints.ALL,
+                        keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Uri)
+                    )
+                    SettingComponents.InputDialogEntry(
+                        preference = Preferences.HOME_ASSISTANT_MQTT_PORT,
+                        title = "Port",
+                        constraint = InputDialogConstraints.POSITIVE_INTEGER,
+                        keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                    SettingComponents.InputDialogEntry(
+                        preference = Preferences.HOME_ASSISTANT_MQTT_USERNAME,
+                        title = "User",
+                        constraint = InputDialogConstraints.ALL,
+                    )
+                    SettingComponents.InputDialogEntry(
+                        preference = Preferences.HOME_ASSISTANT_MQTT_PASSWORD,
+                        title = "Password",
+                        constraint = InputDialogConstraints.ALL,
+                        subtitle = "●".repeat(Preferences.HOME_ASSISTANT_MQTT_PASSWORD.value.length),
+                        keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    )
+                    SettingComponents.InputDialogEntry(
+                        preference = Preferences.HOME_ASSISTANT_DEVICE_ID,
+                        title = "Device ID",
+                        constraint = InputDialogConstraints.ALL
+                    )
+
+                    SettingComponents.BooleanEntry(
+                        Preferences.HOME_ASSISTANT_ALLOW_PLAY_PAUSE,
+                        "Allow play/pause"
+                    )
+                    SettingComponents.BooleanEntry(
+                        Preferences.HOME_ASSISTANT_ALLOW_NEXT,
+                        "Allow next"
+                    )
+                    SettingComponents.BooleanEntry(
+                        Preferences.HOME_ASSISTANT_ALLOW_PREVIOUS,
+                        "Allow previous"
+                    )
+                    SettingComponents.BooleanEntry(
+                        Preferences.HOME_ASSISTANT_ALLOW_SEEK,
+                        "Allow seek"
+                    )
+                    SettingComponents.BooleanEntry(
+                        Preferences.HOME_ASSISTANT_ALLOW_STOP,
+                        "Allow stop"
+                    )
+                }
             }
 
             debugSection( search )

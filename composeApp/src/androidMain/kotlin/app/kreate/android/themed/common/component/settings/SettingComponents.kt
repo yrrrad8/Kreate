@@ -383,6 +383,11 @@ object SettingComponents {
 
                 if ( action == Action.RESTART_APP )
                     RestartAppDialog.showDialog()
+
+                if (action == Action.RESTART_PLAYER_SERVICE) {
+                    Toaster.i( R.string.minimum_silence_length_warning )
+                    RestartPlayerService.requestRestart()
+                }
             },
             modifier = modifier,
             subtitle = subtitle,
