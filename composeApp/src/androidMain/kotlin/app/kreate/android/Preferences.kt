@@ -95,6 +95,7 @@ import it.fast4x.rimusic.enums.UiType
 import it.fast4x.rimusic.enums.WallpaperType
 import it.fast4x.rimusic.ui.styling.DefaultDarkColorPalette
 import it.fast4x.rimusic.ui.styling.DefaultLightColorPalette
+import it.fast4x.rimusic.utils.getDeviceInfo
 import me.knighthat.innertube.Constants
 import me.knighthat.utils.Toaster
 import org.jetbrains.annotations.Blocking
@@ -481,6 +482,55 @@ sealed class Preferences<T>(
         }
         val EXO_DOWNLOAD_SIZE by lazy {
             Long(preferences, Key.EXO_DOWNLOAD_SIZE, "", kotlin.Long.MAX_VALUE)
+        }
+        //</editor-fold>
+        //<editor-fold defaultstate="collapsed" desc="Home Assistant">
+        val HOME_ASSISTANT_ENABLED by lazy {
+            Boolean(preferences, Key.HOME_ASSISTANT_ENABLED, "", false)
+        }
+
+        val HOME_ASSISTANT_MQTT_HOST by lazy {
+            String(preferences, Key.HOME_ASSISTANT_MQTT_HOST, "", "")
+        }
+
+        val HOME_ASSISTANT_MQTT_PORT by lazy {
+            Int(preferences, Key.HOME_ASSISTANT_MQTT_PORT, "", 1883)
+        }
+
+        val HOME_ASSISTANT_MQTT_USERNAME by lazy {
+            String(preferences, Key.HOME_ASSISTANT_MQTT_USERNAME, "", "")
+        }
+
+        val HOME_ASSISTANT_MQTT_PASSWORD by lazy {
+            String(encryptedPreferences, Key.HOME_ASSISTANT_MQTT_PASSWORD, "", "")
+        }
+
+        val HOME_ASSISTANT_DEVICE_ID by lazy {
+            String(preferences, Key.HOME_ASSISTANT_DEVICE_ID, "", getDeviceInfo()?.deviceModel.orEmpty())
+        }
+
+        val HOME_ASSISTANT_DEVICE_NAME by lazy {
+            String(preferences, Key.HOME_ASSISTANT_DEVICE_NAME, "", "")
+        }
+
+        val HOME_ASSISTANT_ALLOW_PLAY_PAUSE by lazy {
+            Boolean(preferences, Key.HOME_ASSISTANT_ALLOW_PLAY_PAUSE, "", true)
+        }
+
+        val HOME_ASSISTANT_ALLOW_NEXT by lazy {
+            Boolean(preferences, Key.HOME_ASSISTANT_ALLOW_NEXT, "", true)
+        }
+
+        val HOME_ASSISTANT_ALLOW_PREVIOUS by lazy {
+            Boolean(preferences, Key.HOME_ASSISTANT_ALLOW_PREVIOUS, "", true)
+        }
+
+        val HOME_ASSISTANT_ALLOW_STOP by lazy {
+            Boolean(preferences, Key.HOME_ASSISTANT_ALLOW_STOP, "", false)
+        }
+
+        val HOME_ASSISTANT_ALLOW_SEEK by lazy {
+            Boolean(preferences, Key.HOME_ASSISTANT_ALLOW_SEEK, "", false)
         }
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Notification">
@@ -1816,6 +1866,18 @@ sealed class Preferences<T>(
         const val IMAGE_CACHE_SIZE = "ThumbnailCacheSizeBytes"
         const val EXO_CACHE_SIZE = "SongCacheSizeBytes"
         const val EXO_DOWNLOAD_SIZE = "SongDownloadSizeBytes"
+        const val HOME_ASSISTANT_ENABLED = "HomeAssistantEnabled"
+        const val HOME_ASSISTANT_MQTT_HOST = "HomeAssistantMqttHost"
+        const val HOME_ASSISTANT_MQTT_PORT = "HomeAssistantMqttPort"
+        const val HOME_ASSISTANT_MQTT_USERNAME = "HomeAssistantMqttUsername"
+        const val HOME_ASSISTANT_MQTT_PASSWORD = "HomeAssistantMqttPassword"
+        const val HOME_ASSISTANT_DEVICE_ID = "HomeAssistantDeviceId"
+        const val HOME_ASSISTANT_DEVICE_NAME = "HomeAssistantDeviceName"
+        const val HOME_ASSISTANT_ALLOW_PLAY_PAUSE = "HomeAssistantAllowPlayPause"
+        const val HOME_ASSISTANT_ALLOW_NEXT = "HomeAssistantAllowNext"
+        const val HOME_ASSISTANT_ALLOW_PREVIOUS = "HomeAssistantAllowPrevious"
+        const val HOME_ASSISTANT_ALLOW_STOP = "HomeAssistantAllowStop"
+        const val HOME_ASSISTANT_ALLOW_SEEK = "HomeAssistantAllowSeek"
         const val MEDIA_NOTIFICATION_FIRST_ICON = "MediaNotificationFirstIcon"
         const val MEDIA_NOTIFICATION_SECOND_ICON = "MediaNotificationSecondIcon"
         const val LYRICS_SIZE = "LyricsSize"

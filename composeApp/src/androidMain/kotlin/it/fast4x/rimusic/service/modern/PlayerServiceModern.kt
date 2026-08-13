@@ -41,6 +41,9 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionToken
 import app.kreate.android.Preferences
 import app.kreate.android.R
+import app.kreate.android.homeassistant.AndroidHomeAssistantDeviceInfoProvider
+import app.kreate.android.homeassistant.AndroidHomeAssistantPlaybackController
+import app.kreate.android.homeassistant.AndroidHomeAssistantSettingsProvider
 import app.kreate.android.service.player.ExoPlayerListener
 import app.kreate.android.service.player.StatefulPlayer
 import app.kreate.android.service.player.VolumeObserver
@@ -50,6 +53,8 @@ import app.kreate.android.utils.isLocalFile
 import app.kreate.android.widget.Widget
 import app.kreate.database.models.Event
 import app.kreate.di.CacheType
+import app.kreate.homeassistant.HomeAssistantBridge
+import app.kreate.mqtt.KtorMqttClient
 import co.touchlab.kermit.Logger
 import com.google.common.util.concurrent.MoreExecutors
 import io.ktor.client.HttpClient
@@ -64,6 +69,7 @@ import it.fast4x.rimusic.service.MyDownloadService
 import it.fast4x.rimusic.utils.AppLifecycleTracker
 import it.fast4x.rimusic.utils.CoilBitmapLoader
 import it.fast4x.rimusic.utils.collect
+import it.fast4x.rimusic.utils.getDeviceInfo
 import it.fast4x.rimusic.utils.getEnum
 import it.fast4x.rimusic.utils.intent
 import it.fast4x.rimusic.utils.isAtLeastAndroid6
@@ -149,6 +155,9 @@ class PlayerServiceModern:
     private var wallpaperRevertJob: Job? = null
     private var wallpaper_cleared: Boolean = false
 
+    private var homeAssistantPlaybackController: AndroidHomeAssistantPlaybackController? = null
+    private var homeAssistantBridge: HomeAssistantBridge? = null
+
 
     private fun onMediaItemTransition( mediaItem: MediaItem? ) {
         listener.updateMediaControl( this, player )
@@ -182,6 +191,10 @@ class PlayerServiceModern:
         Innertube.client = inject<HttpClient>().value
 
         super.onCreate()
+
+        if (Preferences.HOME_ASSISTANT_ENABLED.value) {
+            initializeHomeAssistantBridge()
+        }
 
         volumeObserver.register()
 
@@ -412,6 +425,15 @@ class PlayerServiceModern:
     @UnstableApi
     override fun onDestroy() {
         runCatching {
+            runBlocking {
+                homeAssistantBridge?.stop()
+            }
+
+            homeAssistantPlaybackController?.close()
+
+            homeAssistantBridge = null
+            homeAssistantPlaybackController = null
+
             listener.saveQueueToDatabase()
             volumeObserver.unregister()
 
@@ -620,6 +642,39 @@ class PlayerServiceModern:
             } catch (e: IOException) {
                 Toaster.e("Failed to revert wallpaper")
             }
+        }
+    }
+
+    private fun initializeHomeAssistantBridge() {
+        val settingsProvider =
+            AndroidHomeAssistantSettingsProvider(
+                scope = coroutineScope,
+            )
+
+        val playbackController =
+            AndroidHomeAssistantPlaybackController(
+                player = player,
+            )
+
+        val mqttClient =
+            KtorMqttClient(
+                dispatcher = Dispatchers.IO,
+                parentScope = coroutineScope,
+            )
+
+        homeAssistantPlaybackController = playbackController
+
+        homeAssistantBridge = HomeAssistantBridge(
+            mqttClient = mqttClient,
+            settingsProvider = settingsProvider,
+            playbackController = playbackController,
+            deviceInfoProvider =
+                AndroidHomeAssistantDeviceInfoProvider(
+                    context = applicationContext,
+                ),
+            scope = coroutineScope,
+        ).also {
+            it.start()
         }
     }
 

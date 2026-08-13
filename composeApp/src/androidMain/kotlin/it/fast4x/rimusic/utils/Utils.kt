@@ -233,7 +233,7 @@ fun String.resize(
     height: Int? = null,
 ): String {
     if (width == null && height == null) return this
-    "https://lh3\\.googleusercontent\\.com/.*=w(\\d+)-h(\\d+).*".toRegex().matchEntire(this)?.groupValues?.let { group ->
+    "https://(?:lh3|yt3)\\.googleusercontent\\.com/.*=w(\\d+)-h(\\d+).*".toRegex().matchEntire(this)?.groupValues?.let { group ->
         val (W, H) = group.drop(1).map { it.toInt() }
         var w = width
         var h = height
